@@ -398,6 +398,10 @@ def measure_radius_of_curvature(ploty, left_fit, right_fit, left_fit_x, right_fi
     return (left_curverad + right_curverad) / 2
 ```
 
+### 8. Offset from Centre of lane:
+
+After calculating radius of curvature, I calculate offset of car from centre of lane.
+
 
 ```python
 def find_lanelines(img, mtx, dist, M, M_inv, img_size, displayImage):
@@ -440,9 +444,13 @@ def find_lanelines(img, mtx, dist, M, M_inv, img_size, displayImage):
         fig.suptitle('Output image with detected lanelines in HLS color space')
         plt.imshow(result)
     
-    curve_radius = measure_radius_of_curvature(ploty, left_fit, right_fit, left_fitx, right_fitx)
+    centre_of_lane = abs(right_fitx[0] - left_fitx[0])
     
-    cv2.putText(result,"radius: " + str(curve_radius), ( 25, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 4)
+    curve_radius = measure_radius_of_curvature(ploty, left_fit, right_fit, left_fitx, right_fitx)
+    offset_from_lane_centre = (abs(centre_of_lane - 640)/650) * 3.5
+    
+    cv2.putText(result,"radius: " + str(curve_radius) + 'm', ( 25, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 4)
+    cv2.putText(result,"Offset from lane centre: " + str(offset_from_lane_centre) + 'm', ( 25, 200), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 4)
     
     return result
 ```
@@ -470,11 +478,11 @@ test_calibration(mtx, dist)
 ```
 
 
-![png](output_20_0.png)
+![png](output_21_0.png)
 
 
 
-![png](output_20_1.png)
+![png](output_21_1.png)
 
 
 
@@ -511,57 +519,57 @@ plt.imshow(result_rgb)
 
 
 
-    <matplotlib.image.AxesImage at 0x16c510d6278>
+    <matplotlib.image.AxesImage at 0x2d32b9a2e80>
 
 
 
 
-![png](output_22_1.png)
+![png](output_23_1.png)
 
 
 
-![png](output_22_2.png)
+![png](output_23_2.png)
 
 
 
-![png](output_22_3.png)
+![png](output_23_3.png)
 
 
 
-![png](output_22_4.png)
+![png](output_23_4.png)
 
 
 
-![png](output_22_5.png)
+![png](output_23_5.png)
 
 
 
-![png](output_22_6.png)
+![png](output_23_6.png)
 
 
 
-![png](output_22_7.png)
+![png](output_23_7.png)
 
 
 
-![png](output_22_8.png)
+![png](output_23_8.png)
 
 
 
-![png](output_22_9.png)
+![png](output_23_9.png)
 
 
 
-![png](output_22_10.png)
+![png](output_23_10.png)
 
 
 
-![png](output_22_11.png)
+![png](output_23_11.png)
 
 
 
 ```python
-white_output = './test_videos_output/project_video_output.mp4'
+white_output = './test_videos_output/project_video_output1.mp4'
 ## To speed up the testing process you may want to try your pipeline on a shorter subclip of the video
 ## To do so add .subclip(start_second,end_second) to the end of the line below
 ## Where start_second and end_second are integer values representing the start and end of the subclip
@@ -573,17 +581,17 @@ white_clip = clip1.fl_image(process_image) #NOTE: this function expects color im
 
 ```
 
-    [MoviePy] >>>> Building video ./test_videos_output/project_video_output.mp4
-    [MoviePy] Writing video ./test_videos_output/project_video_output.mp4
+    [MoviePy] >>>> Building video ./test_videos_output/project_video_output1.mp4
+    [MoviePy] Writing video ./test_videos_output/project_video_output1.mp4
     
 
-    100%|█████████████████████████████████████████████████████████████████████████████▉| 1260/1261 [07:09<00:00,  3.10it/s]
+    100%|█████████████████████████████████████████████████████████████████████████████▉| 1260/1261 [06:46<00:00,  3.25it/s]
     
 
     [MoviePy] Done.
-    [MoviePy] >>>> Video ready: ./test_videos_output/project_video_output.mp4 
+    [MoviePy] >>>> Video ready: ./test_videos_output/project_video_output1.mp4 
     
-    Wall time: 7min 11s
+    Wall time: 6min 47s
     
 
 
@@ -600,7 +608,7 @@ HTML("""
 
 
 <video width="960" height="540" controls>
-  <source src="./test_videos_output/project_video_output.mp4">
+  <source src="./test_videos_output/project_video_output1.mp4">
 </video>
 
 
