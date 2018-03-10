@@ -447,10 +447,16 @@ def find_lanelines(img, mtx, dist, M, M_inv, img_size, displayImage):
     centre_of_lane = abs(right_fitx[0] - left_fitx[0])
     
     curve_radius = measure_radius_of_curvature(ploty, left_fit, right_fit, left_fitx, right_fitx)
-    offset_from_lane_centre = (abs(centre_of_lane - 640)/650) * 3.5
+    offset_from_lane_centre = ((centre_of_lane - 640)/650) * 3.5
     
     cv2.putText(result,"radius: " + str(curve_radius) + 'm', ( 25, 100), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 4)
-    cv2.putText(result,"Offset from lane centre: " + str(offset_from_lane_centre) + 'm', ( 25, 200), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 4)
+    
+    if offset_from_lane_centre > 0:
+        cv2.putText(result,"Car is " + str(offset_from_lane_centre) + "m left of lane centre", ( 25, 200), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 4)
+    elif offset_from_lane_centre < 0:
+        cv2.putText(result,"Car is " + str(abs(offset_from_lane_centre)) + "m right of lane centre", ( 25, 200), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 4)
+    else:
+        cv2.putText(result,"Car is in centre of lane", ( 25, 200), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 4)
     
     return result
 ```
@@ -519,7 +525,7 @@ plt.imshow(result_rgb)
 
 
 
-    <matplotlib.image.AxesImage at 0x2d32b9a2e80>
+    <matplotlib.image.AxesImage at 0x1a00db94b00>
 
 
 
@@ -585,13 +591,13 @@ white_clip = clip1.fl_image(process_image) #NOTE: this function expects color im
     [MoviePy] Writing video ./test_videos_output/project_video_output1.mp4
     
 
-    100%|█████████████████████████████████████████████████████████████████████████████▉| 1260/1261 [06:46<00:00,  3.25it/s]
+    100%|█████████████████████████████████████████████████████████████████████████████▉| 1260/1261 [06:27<00:00,  3.39it/s]
     
 
     [MoviePy] Done.
     [MoviePy] >>>> Video ready: ./test_videos_output/project_video_output1.mp4 
     
-    Wall time: 6min 47s
+    Wall time: 6min 29s
     
 
 
